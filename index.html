@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Term Dictionary</title>
+  <style>
+    body {
+      background: #0e1e2d;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #1c2e44;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4caf50;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #fff;
+      color: #000;
+      border-radius: 6px;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>MedTerm Lookup</h1>
+    <input type="text" id="term" placeholder="Enter medical term..." /><button onclick="lookup()">Search</button>
+    <div id="result">Definition will appear here.</div>
+  </div>
+  <script>
+    function lookup() {
+      const term = document.getElementById("term").value.trim();
+      const resultBox = document.getElementById("result");
+      if (!term) {
+        resultBox.textContent = "Please enter a term.";
+        return;
+      }
+      fetch(`/define?term=${encodeURIComponent(term)}`)
+        .then(res => res.json())
+        .then(data => {
+          resultBox.textContent = data.definition || "No definition found.";
+        })
+        .catch(() => {
+          resultBox.textContent = "Error fetching definition.";
+        });
+    }
+  </script>
+</body>
+</html>
